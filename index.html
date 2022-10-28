@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>G01 - Procedure graphics cookbook</title>
+	<link rel="icon" type="image/png" href="./img/favicon.png">
+
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400&&family=Source+Code+Pro&display=swap" rel="stylesheet">
+	
+	<link rel="stylesheet" href="./css/normal.css">
+	<link rel="stylesheet" href="./css/style.css">
+	<link rel="stylesheet" href="./css/code.css">
+</head>
+<body>
+	<div class="wrapper">
+		<div class="header">
+			<div class="container">
+				<h1>LAB001</h1>
+				<h2>Procedure graphs</h2>
+				<p>We are a community of, and in solidarity with, people from every gender identity and expression, sexual orientation, race, ethnicity, language, neuro-type, size, disability, class, religion, culture, subculture, political opinion, age, skill level, occupation, and background. We acknowledge that not everyone has the time, financial means, or capacity to actively participate, but we recognize and encourage involvement of all kinds. We facilitate and foster access and empowerment. We are all learners.</p>
+			</div>
+		</div>
+		<div class="graph-grid" id="graph-grid"></div>
+	</div>
+	<div class="graph-modal" id="graph-modal" style="display: none;">
+		<div class="panel">
+			<div class="graph-view" onclick="closeGraph()">
+				<div id="graph-modal-canvas"></div>
+				<div class="name" id="graph-modal-name"></div>
+			</div>
+			<div class="code-view">
+				<div id="graph-modal-code" class="code"></div>
+			</div>
+		</div>
+		<div class="bg" onclick="closeGraph()"></div>
+	</div>
+
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.1/p5.min.js"></script>
+	<script src="./js/graphList.js"></script>
+	<script src="./js/formatCode.js"></script>
+	<script>
+
+		window.onload = function() {
+			initGraphs(graphList);
+		}
+
+		function initGraphs(dataList) {
+			const grid = document.getElementById('graph-grid');
+			dataList.forEach((item, index) => {
+				const cell = createGraphCell(item);
+
+				cell.style.opacity = 0;
+				grid.appendChild(cell);
+
+				setTimeout(() => {
+					cell.style.opacity = 1;
+				}, index * 100);
+			});
+		}
+
+		function createGraphCell(data) {
+			const cell = document.createElement('div');
+			cell.className = 'item';
+
+			const name = document.createElement('div');
+			name.className = 'name';
+			name.innerText = data.name;
+			cell.appendChild(name);
+
+			// thumbnail
+			if (typeof data.thumbnail === 'string') {
+				cell.style.backgroundImage = `url(./graphs/${data.id}/${data.thumbnail})`;
+			}
+
+			cell.addEventListener('click', (event) => {
+				openGraph(data, cell);
+			});
+
+			return cell;
+		}
+
+		function openGraph(data) {
+			if (activeP5) activeP5.remove();
+			const modal = document.getElementById('graph-modal');
+			modal.style.display = 'block';
+			setTimeout(() => {
+				loadGraph(data.id);
+			}, 100);
+
+		}
+
+		function closeGraph() {
+			const modal = document.getElementById('graph-modal');
+			modal.style.display = 'none';
+			if (activeP5) activeP5.remove();
+			document.getElementById('graph-modal-name').innerHTML = '';
+			document.getElementById('graph-modal-code').innerHTML = '';
+		}
+
+		let activeP5 = null;
+		async function loadGraph(id) {
+			if (activeP5) activeP5.remove();
+
+			const importModule = await import(`./graphs/${id}/${id}.js`); 
+			const g = importModule.default();
+			activeP5 = new p5(g.p5, document.getElementById('graph-modal-canvas'));
+
+			document.getElementById('graph-modal-name').innerHTML = g.name;
+			document.getElementById('graph-modal-code').innerHTML = formatCode(g.code);
+		}
+	</script>
+</body>
+</html>

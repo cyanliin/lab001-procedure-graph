@@ -1,0 +1,207 @@
+body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    color: #ddd;
+    background-color: #222;
+    font-family: 'Roboto', sans-serif;
+}
+
+canvas {
+    
+}
+
+.container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 0 30px;
+}
+
+.header {
+    font-size: 10pt;
+    font-weight: 300;
+    line-height: 170%;
+    margin: 50px 0;
+}
+.header h1 {
+    font-size: 40pt;
+}
+.header h2 {
+    font-size: 25pt;
+    line-height: 120%;
+    text-transform: uppercase;
+}
+.graph-grid {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100vw;
+    margin: 0;
+    border-top: 1px solid #000;
+}
+.graph-grid > .item {
+    position: relative;
+    border-left: 1px solid #000;
+    border-bottom: 1px solid #000;
+    width: calc(100vw / 3);
+    height: calc(100vw / 3);
+    transition: 0.3s, width 0s, height 0s, opacity 1s;
+    background-position: center;
+    background-size: cover;
+}
+.graph-grid > .item:last-child {
+    border-right: 1px solid #000;
+}
+.graph-grid > .item:hover {
+    background-color: #333;
+}
+@media(min-width: 1100px) {
+    .header {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 300px;
+        height: 100%;
+        overflow-y: auto;
+    }
+    .graph-grid {
+        width: calc(100vw - 300px);
+        margin: 0 0 0 300px;
+        grid-template-columns: 1fr 1fr 1fr;
+    }
+    .graph-grid > .item {
+        width: calc((100vw - 300px) / 3);
+        height: calc((100vw - 300px) / 3);
+    }
+}
+@media(min-width: 1400px) {
+    .header {
+        width: 400px;
+    }
+    .graph-grid {
+        width: calc(100vw - 400px);
+        margin: 0 0 0 400px;
+        grid-template-columns: 1fr 1fr 1fr 1fr;
+    }
+    .graph-grid > .item {
+        width: calc((100vw - 400px) / 4);
+        height: calc((100vw - 400px) / 4);
+    }
+}
+
+.graph-grid > .item > .name {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 10px;
+    font-size: 7pt;
+    color: #888;
+    text-align: center;
+}
+.graph-grid > .item:hover > .name {
+    color: #ddd;
+}
+@media(min-width: 1100px) {
+    .graph-grid > .item > .name {
+        font-size: 8pt;
+    }
+}
+
+
+.graph-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    overflow-y: scroll;
+}
+.graph-modal > .panel {
+    display: block;
+    background-color: #222;
+    min-height: 100vh;
+    z-index: 10;
+}
+@media(min-width: 1100px) {
+    .graph-modal > .panel {
+        display: grid;
+        grid-template-columns: 100vh auto;
+        align-items: center;
+    }
+}
+.graph-modal > .panel > .graph-view {
+    position: relative;
+    width: 100vw;
+    height: 100vw;
+    background-color: #000;
+}
+@media(min-width: 1100px) {
+    .graph-modal > .panel > .graph-view {
+        width: 100vh;
+        height: 100vh;
+        border-right: 1px solid #000;
+    }
+}
+.graph-modal > .panel > .graph-view .p5Canvas {
+}
+.graph-modal > .panel > .graph-view .name {
+    position: absolute;
+    bottom: 10px;
+    left: 0;
+    width: 100%;
+    text-align: center;
+    font-size: 10pt;
+    color: #ccc;
+    display: none;
+}
+.graph-modal > .panel > .code-view {
+    border-top: 1px solid #000;
+    padding: 1.5rem;
+    font-size: 10pt;
+}
+@media(min-width: 1100px) {
+    .graph-modal > .panel > .code-view {
+        border-top: 0;
+        font-size: 11pt;
+        max-height: 100vh;
+        overflow-y: auto;
+    }
+}
+
+
+
+
+
+/*
+.graph-modal > .bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #000000cc;
+}
+
+.graph-modal > .panel {
+    position: absolute;
+    display: grid;
+    grid-template-columns: 80vh 1fr;
+    top: 10vh;
+    left: 10vh;
+    width: calc(100vw - 20vh);
+    height: 80vh;
+    background-color: #222;
+    z-index: 10;
+    border: 1px solid #000; 
+}
+
+.graph-modal > .panel > .graph-view {
+
+}
+.graph-modal > .panel > .graph-view .p5Canvas {
+}
+.graph-modal > .panel > .code-view {
+    border-left: 1px solid #000;
+    padding: 2rem;;
+}
+*/
